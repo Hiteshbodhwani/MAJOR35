@@ -12,23 +12,23 @@ const Review =require("./models/review.js");
 const session = require("express-session");
 const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
-// let dburl = "mongodb+srv://Hitesh:6IxSpHWnPo0k78sE@cluster0.hbwtn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+let dburl = "mongodb+srv://Hitesh:6IxSpHWnPo0k78sE@cluster0.hbwtn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const passport = require("passport");
 const Localstrategy =require("passport-local");
 const User= require("./models/user.js"); 
-// const store = MongoStore.create({
-//   mongoUrl : dburl,
-//   crypto:{
-//     secret:"mysupersecretcode",
-//   },
-//   touchAfter: 24 * 3600,
-// });
-// store.on("error",()=>{
-//   console.log("ERROR in MONGO SESSION STORE",err);
-// });
+const store = MongoStore.create({
+  mongoUrl : dburl,
+  crypto:{
+    secret:"mysupersecretcode",
+  },
+  touchAfter: 24 * 3600,
+});
+store.on("error",()=>{
+  console.log("ERROR in MONGO SESSION STORE",err);
+});
 const sessionOptions = {
-  //  store,
+   store,
   secret : "mysupersecretcode",
   resave:false,
   saveUnintialized:true,
@@ -80,7 +80,7 @@ main()
     console.log(err);
 })
 async function main(){
-    await mongoose.connect("mongodb://127.0.0.1/my_database");
+    await mongoose.connect(dburl);
 }
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
